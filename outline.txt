@@ -1,0 +1,9 @@
+Outline
+
+-User issues a text query to a bot on the server, expecting a google images response
+    -The bot replies with the first hit on Google Images using an API call
+    -The bot then save the image to a folder, compresses the image to 200x200 or however lesser, with Pillow
+        -Bonus feature: maybe use some kind of system to remove the background?
+    -The bot will then check to see if there are available emoji slots, if so then save the image as an emoji
+        -if there are no slots available override the last created (first) emoji
+    -The bot then replies with the emoji and emoji coded
