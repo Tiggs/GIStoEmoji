@@ -1,10 +1,12 @@
 from PIL import Image
 from os import path
 from pathlib import PurePath
-import Apikeys
+#import Apikeys
+from dotenv import dotenv_values
 import requests
-import re
- 
+import re 
+
+config = dotenv_values(".env")
 
 def do_things(query, options) -> bool:
     res = query_gis(query, options)
@@ -34,15 +36,18 @@ def process_image(image_name, options) -> None:
     base_image.save('emoji/' + image_name.with_suffix('.png').name)
 
 def query_gis(query, options=None) -> dict:
+    
     try:   
         r = requests.get('https://customsearch.googleapis.com/customsearch/v1', params={
             'q': query,
             'num': 1,
             'start': 1,
             'imgSize': 'medium',
+            'imgType': 'clipart',
+            'safe': 'active',
             'searchType': 'image',
-            'key': Apikeys.key,
-            'cx': Apikeys.cx,
+            'key': config["GIS_KEY"],
+            'cx': config["GIS_CX"],
         }, timeout=5)
     except requests.exceptions.HTTPError as e:
         print (e)
@@ -53,4 +58,6 @@ def handle_gis_response(req) -> tuple:
     #return (req['items'][0]['fileFormat'], req['items'][0]['image']['thumbnailLink'])
     return (req['items'][0]['fileFormat'], req['items'][0]['link'])
     
+    
+
 do_things('cat', None)
